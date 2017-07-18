@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        .container{
+            width: 300px;
+            height: 300px;
+            border: 10px solid transparent;
+            border-radius: 50%;
+
+            position: relative;
+            top: 100px;
+            left: 100px;
+            overflow: hidden;
+        }
+        .container img,.cicle,canvas{
+            height: inherit;
+            width: inherit;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+        }
+        .container .cicle{
+            width: 300px;
+            height: 300px;
+            top: 0px;
+            left: 0px;
+            border: 10px solid yellow;
+            border-radius: 50%;
+        }
+        canvas {
+            top: 0px;
+            left: 0px;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+        <div class="container">
+            <img src="clock.png" alt="">
+            <!--<div class="cicle"></div>-->
+            <canvas id="c13" width="300" height="300"></canvas>
+        </div>
+
+
+        <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="js/react.js"></script>
+        <script src="js/react-dom.js"></script>
+        <script src="js/browser.min.js"></script>
+        <script>
+            getTime();
+            var ctx = c13.getContext('2d');
+
+            //绘制灰色的背景圆环
+            ctx.beginPath();
+            ctx.arc(150,150,150,0, 2*Math.PI);
+            ctx.lineWidth = 20;
+            ctx.strokeStyle = '#aaa';
+            ctx.stroke();
+
+            //绘制圆形进度条
+            var start = -90;  //进度条的起始角度
+            var end = -90;    //进度条的终止角度
+            var num = 60;   //倒计时数字
+            var t = setInterval(function(){
+                //此练习中可以省略“清除画布”步骤
+                ctx.beginPath();
+                ctx.arc(150,150,150,start*Math.PI/180,end*Math.PI/180);
+                ctx.strokeStyle = '#00f';
+                ctx.stroke();
+
+                ctx.clearRect(90,90,160,160);
+
+                num<10? num='0'+num : '';
+                ctx.fillStyle='#00f';
+                ctx.textAlign="center";
+                ctx.font="80px Arial";
+                ctx.fillText(num,155,170);
+
+                end += 6;
+                num -=1;
+
+                if(end>270){
+//                    num = getTime();
+                    clearInterval(t);
+                }
+            }, 200);
+            function add0(m){return m<10?'0'+m:m }
+            function getTime(){
+                $.get('/getTime',function(result){
+                    var time = new Date(parseInt(result.time));
+                    var y = time.getFullYear();
+                    var m = time.getMonth()+1;
+                    var d = time.getDate();
+                    var h = time.getHours();
+                    var mm = time.getMinutes();
+                    var s = time.getSeconds();
+                    return add0(s);
+//                    console.log(y+'-'+add0(m)+'-'+add0(d)+' '+add0(h)+':'+add0(mm)+':'+add0(s));
+                })
+            }
+        </script>
+</body>
+</html>

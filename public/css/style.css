@@ -1,0 +1,30 @@
+
+
+body{
+    margin: 0;
+    padding: 0;
+}
+.container{
+    width: 300px;
+    height: 300px;
+    border: 10px solid transparent;
+    border-radius: 50%;
+
+    position: relative;
+    top: 100px;
+    left: 100px;
+    overflow: hidden;
+}
+.container img,canvas{
+    height: inherit;
+    width: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+}
+canvas {
+    top: 0px;
+    left: 0px;
+    background: transparent;
+}
